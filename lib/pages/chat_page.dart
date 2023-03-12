@@ -28,6 +28,8 @@ class _ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final id = context.watch<LoginPageState>().id.toString();
+    final chats = context.watch<ChatPageState>().chats;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -38,6 +40,31 @@ class _ChatPage extends StatelessWidget {
       ),
       body: Container(
         color: Colors.teal,
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: chats.length,
+            itemBuilder: (_, index) {
+              final chat = chats[index];
+              final isMyId = id == chat.id;
+              return Align(
+                alignment: isMyId ? Alignment.topLeft : Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color: isMyId ? Colors.white : Colors.lightBlue,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 9, horizontal: 8),
+                      child: Text(chat.message),
+                    ),
+                  ),
+                ),
+              );
+            }),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 3, 35),
